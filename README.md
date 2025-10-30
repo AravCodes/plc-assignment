@@ -43,7 +43,7 @@ Ports used: PM API 5067, TM API 5091, CRA frontends 3000/3001.
 
 ---
 
-## Home Assignment 1 – Basic Task Manager (Credits 10)
+## Home Assignment 1 – Basic Task Manager
 
 Objective: Build a simple full-stack app with C# (.NET 8) and React + TypeScript.
 
@@ -83,7 +83,7 @@ npm --prefix .\task-manager\task-manager-frontend start
 
 ---
 
-## Home Assignment 2 – Mini Project Manager (Credits 20)
+## Home Assignment 2 – Mini Project Manager
 
 Objective: A fuller web app with authentication, entity relationships, routing, and modular code.
 
@@ -181,4 +181,3 @@ Useful URLs
 - Backends: Render/Fly.io/Azure (enable HTTPS, set `AllowedOrigins` and `Jwt:Secret`)
 - Frontends: Vercel/Netlify (set `REACT_APP_API_URL` to your backend URL)
 
-Submission should be a GitHub repo (no zip). This repo is prepared accordingly.
