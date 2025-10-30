@@ -1,0 +1,13 @@
+# Auto text normalization (prevents CRLF/LF churn across OSes)
+* text=auto
+
+# Improve C# diffs
+*.cs diff=csharp
+
+# Treat common binaries as binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.ico binary
+*.pdf binary
+*.zip binary
