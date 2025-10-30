@@ -1,16 +1,16 @@
 # PLC Assignment (Monorepo)
 
-Two small apps live here:
-- Assignment 1: Task Manager – .NET 8 Minimal API (in-memory) + React
-- Assignment 2: Project Manager – .NET 8 Minimal API (EF Core SQLite + JWT) + React
+Two apps are included, aligning to the assignment briefs:
+- Home Assignment 1: Basic Task Manager — .NET 8 Minimal API (in-memory) + React (TypeScript)
+- Home Assignment 2: Mini Project Manager — .NET 8 Minimal API (EF Core SQLite + JWT) + React (TypeScript)
 
-This README is optimized for Windows PowerShell. Adjust commands as needed for your shell.
+This README is optimized for Windows PowerShell. Adjust for your shell if needed.
 
 ## Repo layout
 
 plc-assignment/
 - project-manager/
-  - backend/ProjectManagerAPI (API, SQLite)
+  - backend/ProjectManagerAPI (API, SQLite, JWT)
   - project-manager-frontend (React + TS)
 - task-manager/
   - backend/TaskManagerAPI (API, in-memory)
@@ -20,73 +20,152 @@ plc-assignment/
 
 - .NET 8 SDK
 - Node.js 18+ and npm
-- Git (for cloning/pushing)
+- Git
 
-Ports used: Project Manager API 5067, Task Manager API 5091, CRA frontends 3000/3001.
+Ports used: PM API 5067, TM API 5091, CRA frontends 3000/3001.
 
-## Quick start
+---
 
-1) Project Manager API (Assignment 2)
-- Set a dev JWT secret (don’t use in production):
-  - PowerShell: `$Env:Jwt__Secret = 'dev-secret-change-me'`
-- Start API from repo root:
-  - `dotnet run --project .\project-manager\backend\ProjectManagerAPI\ProjectManagerAPI.csproj`
-- Swagger (Development only): http://localhost:5067/swagger
+## Home Assignment 1 – Basic Task Manager (Credits 10)
+
+Objective: Build a simple full-stack app with C# (.NET 8) and React + TypeScript.
+
+Implemented features
+- Display a list of tasks
+- Add a new task (description)
+- Toggle task completion
+- Delete a task
+
+Backend (.NET 8, in-memory)
+- In-memory repository (no database)
+- Endpoints (scoped by projectId to support multi-project demo):
+  - GET /api/projects/{projectId}/tasks
+  - POST /api/projects/{projectId}/tasks
+  - PUT /api/projects/{projectId}/tasks/{id}
+  - DELETE /api/projects/{projectId}/tasks/{id}
+
+Frontend (React + TypeScript)
+- Single-page app using React Hooks and Axios
+- Components (see `task-manager/task-manager-frontend/src/components/`):
+  - TaskInput.tsx — add new task
+  - TaskList.tsx — render list
+  - TaskItem.tsx — toggle/delete
+
+Quality-of-life enhancements
+- Optional filtering and basic styling (Bootstrap-ready)
+- LocalStorage can be added to persist tasks client-side
+
+How to run (Assignment 1)
+```powershell
+# Backend
+dotnet run --project .\task-manager\backend\TaskManagerAPI\TaskManagerAPI.csproj
+
+# Frontend
+npm --prefix .\task-manager\task-manager-frontend start
+```
+
+---
+
+## Home Assignment 2 – Mini Project Manager (Credits 20)
+
+Objective: A fuller web app with authentication, entity relationships, routing, and modular code.
+
+Core features
+- Authentication: Register, Login (JWT); users only see their data
+- Projects: title (3–100), description (<= 500), createdAt auto
+- Tasks per project: title (required), due date (optional), completion status
+
+Backend (.NET 8 + EF Core SQLite + JWT)
+- DataAnnotations for DTO validation
+- Minimal APIs with clear separation (DTOs, models, endpoints)
+- Endpoints
+  - Auth
+    - POST /api/auth/register
+    - POST /api/auth/login
+    - GET /api/auth/me (requires auth)
+  - Projects
+    - GET /api/projects
+    - POST /api/projects
+    - GET /api/projects/{id}
+    - DELETE /api/projects/{id}
+  - Tasks (per-project)
+    - GET /api/projects/{projectId}/tasks
+    - POST /api/projects/{projectId}/tasks
+    - PUT /api/projects/{projectId}/tasks/{taskId}
+    - DELETE /api/projects/{projectId}/tasks/{taskId}
+
+Frontend (React + TypeScript)
+- Pages (see `project-manager/project-manager-frontend/src/pages/`):
+  - Login.tsx / Register.tsx
+  - Dashboard.tsx (list projects)
+  - ProjectPage.tsx (project detail + task list; add/update/delete/toggle)
+  - ScheduleDemo.tsx (example consumer for scheduler)
+- AuthContext.tsx stores JWT and attaches it via Axios interceptor
+- React Router for navigation; form validation and error states included
+
+Smart Scheduler API (Required Enhancement, Credits 10)
+- Endpoint: POST `/api/v1/projects/{projectId}/schedule` (requires auth)
+- Input example
+```json
+{
+  "tasks": [
+    { "title": "Design", "duration": 2 },
+    { "title": "Build", "duration": 3 }
+  ],
+  "startDate": "2025-11-01"
+}
+```
+- Output example
+```json
+{
+  "schedule": [
+    { "title": "Design", "start": "2025-11-01", "end": "2025-11-02" },
+    { "title": "Build", "start": "2025-11-03", "end": "2025-11-05" }
+  ]
+}
+```
+
+How to run (Assignment 2)
+```powershell
+# API (set a dev secret; do not use in production)
+$Env:Jwt__Secret = 'dev-secret-change-me'
+dotnet run --project .\project-manager\backend\ProjectManagerAPI\ProjectManagerAPI.csproj
+
+# Frontend (ensure REACT_APP_API_URL points to http://localhost:5067)
+npm --prefix .\project-manager\project-manager-frontend start
+```
+
+Useful URLs
+- Swagger (Development): http://localhost:5067/swagger
 - Health: http://localhost:5067/health
 
-2) Project Manager Frontend
-- Copy `.env.example` to `.env` in `project-manager/project-manager-frontend` and ensure `REACT_APP_API_URL=http://localhost:5067`.
-- Start:
-  - `npm --prefix .\project-manager\project-manager-frontend start`
-- App opens at http://localhost:3000 (or 3001 if 3000 is busy).
-
-3) Task Manager API (Assignment 1) – optional showcase
-- Start:
-  - `dotnet run --project .\task-manager\backend\TaskManagerAPI\TaskManagerAPI.csproj`
-- Health: (if implemented) check API base.
-
-4) Task Manager Frontend – optional
-- Start:
-  - `npm --prefix .\task-manager\task-manager-frontend start`
+---
 
 ## Configuration
 
-- CORS: `AllowedOrigins` in appsettings.
-- JWT: Provide `Jwt:Secret` via environment variable or user-secrets. Do not commit secrets.
-- Frontend: `REACT_APP_API_URL` points to API base URL.
-- Database: EF Core uses SQLite (file is created on first run). DB files are ignored by Git.
+- CORS: `AllowedOrigins` in API appsettings
+- JWT secret: set `Jwt:Secret` via environment variable or user-secrets
+- Frontend base URL: `REACT_APP_API_URL`
+- Database: EF Core SQLite (local file created automatically; ignored by Git)
 
 ## Seeding / smoke tests
 
-- Project Manager seed/smoke: `project-manager/seed-project-manager.ps1`
-  - Example (PowerShell):
-    - `$base = 'http://localhost:5067'`
-    - `powershell -File .\project-manager\seed-project-manager.ps1 -BaseUrl $base`
-- Task Manager seed and view: `task-manager/seed-and-view.ps1`
+- Project Manager: `project-manager/seed-project-manager.ps1`
+- Task Manager: `task-manager/seed-and-view.ps1`
 
 ## Troubleshooting
 
-- Port busy errors: stop any apps using 5067/5091/3000/3001 and retry.
-- SQLite schema errors like `no such column: DueDate`: the API includes a dev-time patch; restart the API once to apply.
+- If ports 5067/5091/3000/3001 are busy, stop processes and retry
+- If you encounter `no such column: DueDate`, re-run once; a dev-time schema patch adds it
 
-## Push to GitHub
+## Time estimates (from brief)
 
-Using GitHub CLI (recommended):
-1. Initialize and commit
-   - `git init`
-   - `git add -A`
-   - `git commit -m "Initial commit: PLC Assignment monorepo"`
-   - `git branch -M main`
-2. Create and push repo (authenticated with `gh auth login`)
-   - `gh repo create plc-assignment --public --source . --remote origin --push`
+- Assignment 1: 3–6 hours
+- Assignment 2 (+ Scheduler): 8–12 hours (+10 credits enhancement)
 
-Manual (via website):
-1. Create an empty repo named `plc-assignment` on GitHub.
-2. Add remote and push:
-   - `git remote add origin https://github.com/<your-username>/plc-assignment.git`
-   - `git push -u origin main`
+## Deployment (bonus)
 
-## Notes
+- Backends: Render/Fly.io/Azure (enable HTTPS, set `AllowedOrigins` and `Jwt:Secret`)
+- Frontends: Vercel/Netlify (set `REACT_APP_API_URL` to your backend URL)
 
-- Keep secrets out of source control; provide via env vars or secret stores.
-- For production, prefer EF Core migrations rather than dev-time schema patches.
+Submission should be a GitHub repo (no zip). This repo is prepared accordingly.
