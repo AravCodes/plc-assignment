@@ -1,10 +1,27 @@
-# PLC Assignment (Monorepo)
+# PLC Assignment
 
 Two apps are included, aligning to the assignment briefs:
 - Home Assignment 1: Basic Task Manager — .NET 8 Minimal API (in-memory) + React (TypeScript)
 - Home Assignment 2: Mini Project Manager — .NET 8 Minimal API (EF Core SQLite + JWT) + React (TypeScript)
 
-This README is optimized for Windows PowerShell. Adjust for your shell if needed.
+## Working Demo
+<img width="1919" height="987" alt="Screenshot 2025-10-31 021810" src="https://github.com/user-attachments/assets/f9e62ad1-89e7-4281-b600-120f23952e1a" />
+
+<img width="1919" height="990" alt="Screenshot 2025-10-31 021828" src="https://github.com/user-attachments/assets/9fbd5163-791c-4acd-bdfc-8b5f4ff7efb4" />
+
+<img width="1919" height="984" alt="Screenshot 2025-10-31 021854" src="https://github.com/user-attachments/assets/769e410a-8afd-47f2-b4d2-e0e1547b5d99" />
+
+<img width="1918" height="1006" alt="Screenshot 2025-10-31 021912" src="https://github.com/user-attachments/assets/ae6768be-8517-4a58-af7c-0711bf703390" />
+
+<img width="1890" height="969" alt="Screenshot 2025-10-31 030403" src="https://github.com/user-attachments/assets/c4033913-11c4-483a-851d-87e0a1df3ca1" />
+
+<img width="1894" height="1084" alt="Screenshot 2025-10-31 030439" src="https://github.com/user-attachments/assets/d65ff0f4-524a-476a-872f-e5fd7282cc1f" />
+
+
+
+
+
+
 
 ## Repo layout
 
@@ -156,12 +173,8 @@ Useful URLs
 ## Troubleshooting
 
 - If ports 5067/5091/3000/3001 are busy, stop processes and retry
-- If you encounter `no such column: DueDate`, re-run once; a dev-time schema patch adds it
 
-## Time estimates (from brief)
 
-- Assignment 1: 3–6 hours
-- Assignment 2 (+ Scheduler): 8–12 hours (+10 credits enhancement)
 
 ## Deployment (bonus)
 
