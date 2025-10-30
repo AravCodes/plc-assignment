@@ -176,8 +176,4 @@ Useful URLs
 
 
 
-## Deployment (bonus)
-
-- Backends: Render/Fly.io/Azure (enable HTTPS, set `AllowedOrigins` and `Jwt:Secret`)
-- Frontends: Vercel/Netlify (set `REACT_APP_API_URL` to your backend URL)
 
